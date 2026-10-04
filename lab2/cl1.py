@@ -1,18 +1,13 @@
-"""
-cl1 — модель конвертера валют «рубль — доллар — евро».
 
-Хранит сумму в рублях и курсы валют. Любое изменение одной величины
-пересчитывает остальные и сообщает о них через собственные сигналы.
-"""
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 
 class CurrencyModel(QObject):
-    # собственные сигналы: новое значение суммы в соответствующей валюте
+   
     rubChanged = pyqtSignal(float)
     usdChanged = pyqtSignal(float)
     eurChanged = pyqtSignal(float)
-    # сообщение для строки состояния
+ 
     message = pyqtSignal(str)
 
     def __init__(self, usd_rate=81.50, eur_rate=94.80, parent=None):
@@ -21,7 +16,7 @@ class CurrencyModel(QObject):
         self._usd_rate = usd_rate     # рублей за 1 доллар
         self._eur_rate = eur_rate     # рублей за 1 евро
 
-    # ---------- вычисляемые величины ----------
+  
     def rub(self):
         return self._rub
 
@@ -31,7 +26,7 @@ class CurrencyModel(QObject):
     def eur(self):
         return self._rub / self._eur_rate
 
-    # ---------- слоты: пользователь изменил одно из полей ----------
+  
     @pyqtSlot(float)
     def setRub(self, value):
         self._rub = value
@@ -47,7 +42,7 @@ class CurrencyModel(QObject):
         self._rub = value * self._eur_rate
         self._notify(source="eur")
 
-    # ---------- слоты: изменили курс ----------
+
     @pyqtSlot(float)
     def setUsdRate(self, rate):
         if rate > 0:
@@ -61,8 +56,7 @@ class CurrencyModel(QObject):
             self._notify(source="rate")
 
     def _notify(self, source):
-        """Испускает сигналы для всех величин, кроме той, которую сейчас
-        редактирует пользователь (иначе поле перезапишется во время ввода)."""
+     
         if source != "rub":
             self.rubChanged.emit(self.rub())
         if source != "usd":
