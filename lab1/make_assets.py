@@ -1,10 +1,10 @@
-"""Генерация картинок для ЛР1 (запускается один раз; готовые PNG лежат в assets/)."""
+
 from PIL import Image, ImageDraw, ImageFilter
 import math
 
-S = 4  # суперсэмплинг для сглаживания
+S = 4  
 
-# 1) Картинка, которая заменяет надпись: простой пейзаж с солнцем
+
 W, H = 220, 130
 img = Image.new("RGBA", (W*S, H*S), (0, 0, 0, 0))
 d = ImageDraw.Draw(img)
@@ -17,7 +17,7 @@ d.rounded_rectangle([0, 100*S, W*S-1, H*S-1], radius=18*S, fill=(95, 170, 90, 25
 d.rectangle([0, 100*S, W*S-1, 112*S], fill=(95, 170, 90, 255))
 img.resize((W, H), Image.LANCZOS).save("assets/picture.png")
 
-# 2) Полупрозрачный PNG, задающий форму окна: «капля»-шестерёнка с мягким краем
+
 N = 460
 cx = cy = N * S / 2
 mask = Image.new("L", (N*S, N*S), 0)
@@ -30,7 +30,7 @@ for i in range(720):
 md.polygon(pts, fill=255)
 mask = mask.resize((N, N), Image.LANCZOS)
 
-# заливка: радиальный градиент, альфа 150..235 => окно полупрозрачное
+
 fill = Image.new("RGBA", (N, N))
 px = fill.load()
 for y in range(N):
