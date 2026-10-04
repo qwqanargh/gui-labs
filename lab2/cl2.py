@@ -1,11 +1,4 @@
-"""
-cl2 — поле ввода суммы с собственным сигналом.
 
-Сигнал valueEdited(float) испускается только при вводе с клавиатуры
-(встроенный сигнал textEdited), а программная установка значения
-слотом setValue() его не вызывает — поэтому поля, обновляя друг друга,
-не зацикливаются.
-"""
 from PyQt5.QtCore import Qt, QRegularExpression, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QRegularExpressionValidator, QFont
 from PyQt5.QtWidgets import QLineEdit
