@@ -1,12 +1,4 @@
-"""
-Лабораторная работа №1
-«Основы проектирования графического интерфейса компьютерных систем»
 
-Окно с надписью и двумя кнопками:
-  * Кнопка 1 — заменяет надпись на изображение (повторное нажатие возвращает текст);
-  * Кнопка 2 — меняет форму окна: окно становится безрамочным и принимает
-    форму полупрозрачного PNG (повторное нажатие возвращает обычное окно).
-"""
 import sys
 from pathlib import Path
 
@@ -31,11 +23,11 @@ class MainWindow(QWidget):
         self.shape = QPixmap(str(ASSETS / "shape.png"))
 
         # состояние
-        self.show_picture = False   # что сейчас в надписи: текст или картинка
-        self.shaped = False         # окно обычное или «фигурное»
-        self._drag_offset = None    # для перетаскивания безрамочного окна
+        self.show_picture = False   
+        self.shaped = False         
+        self._drag_offset = None    
 
-        # --- виджеты ---
+        
         self.label = QLabel(LABEL_TEXT)
         self.label.setAlignment(Qt.AlignCenter)
         self.label.setMinimumSize(240, 140)
@@ -49,7 +41,7 @@ class MainWindow(QWidget):
             b.setMinimumSize(110, 34)
             b.setCursor(Qt.PointingHandCursor)
 
-        # --- компоновка (по эскизу: надпись сверху, две кнопки в ряд) ---
+        
         buttons = QHBoxLayout()
         buttons.addStretch()
         buttons.addWidget(self.btn1)
@@ -70,7 +62,7 @@ class MainWindow(QWidget):
 
         self.resize(*NORMAL_SIZE)
 
-    # ---------------- Кнопка 1 ----------------
+
     def toggle_label(self):
         """Надпись <-> изображение."""
         self.show_picture = not self.show_picture
@@ -82,7 +74,7 @@ class MainWindow(QWidget):
             self.label.setText(LABEL_TEXT)
             self.btn1.setToolTip("Заменить надпись на изображение")
 
-    # ---------------- Кнопка 2 ----------------
+  
     def toggle_shape(self):
         """Обычное окно <-> окно в форме полупрозрачного PNG."""
         self.shaped = not self.shaped
@@ -92,7 +84,7 @@ class MainWindow(QWidget):
             self.setAttribute(Qt.WA_TranslucentBackground, True)
             self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
             self.setFixedSize(self.shape.size())
-            # маска по альфа-каналу: клики по прозрачной области «проходят насквозь»
+           
             self.setMask(QRegion(self.shape.mask()))
             self.layout_.setContentsMargins(70, 70, 70, 70)
             self.label.setStyleSheet("color: white;")
@@ -112,7 +104,7 @@ class MainWindow(QWidget):
             self.label.setStyleSheet("")
             self.setStyleSheet("")
         self.move(pos)
-        self.show()  # после setWindowFlags окно нужно показать заново
+        self.show()  
 
     def paintEvent(self, event):
         if self.shaped:
@@ -123,7 +115,7 @@ class MainWindow(QWidget):
             p.drawPixmap(0, 0, self.shape)
         super().paintEvent(event)
 
-    # ------- перетаскивание окна без рамки мышью -------
+   
     def mousePressEvent(self, e):
         if self.shaped and e.button() == Qt.LeftButton:
             self._drag_offset = e.globalPos() - self.frameGeometry().topLeft()
@@ -136,7 +128,7 @@ class MainWindow(QWidget):
         self._drag_offset = None
 
     def keyPressEvent(self, e):
-        # у безрамочного окна нет кнопки «закрыть» — закрываем по Esc
+        
         if e.key() == Qt.Key_Escape:
             self.close()
 
