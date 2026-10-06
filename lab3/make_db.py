@@ -1,4 +1,4 @@
-"""Создаёт тестовую базу данных university.db (SQLite) для проверки программы."""
+
 import sqlite3
 from pathlib import Path
 
